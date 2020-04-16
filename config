@@ -100,7 +100,7 @@ set $workspace3 "3: Work "
 set $workspace4 "4: Terminals "
 set $workspace5 "5: Office "
 set $workspace6 "6: Code "
-set $workspace7 "7"
+set $workspace7 "7: Stocks "
 set $workspace8 "8"
 set $workspace9 "9"
 set $workspace10 "10: Music "
@@ -135,9 +135,8 @@ assign [class="Spyder"] $workspace3
 #assign [class="Gnome-terminal"] $workspace4
 assign [class="libreoffice-startcenter|Soffice"] $workspace5
 assign [class="Code"] $workspace6
-assign [class="Chromium-browser"] $workspace6
+#assign [class="Chromium-browser"] $workspace6
 for_window [class="Spotify"] move to workspace $workspace10
-
 
 bindsym $mod+Shift+e exec ~/.config/i3/scripts/exit_menu
 
@@ -220,6 +219,8 @@ bindsym $mod+shift+x exec i3lock --color "$bg-color"
 bindsym Mod1+Control+d exec nemo
 # Open kipet launcher
 bindsym Mod1+Control+k exec bash ~/Start/run_kipet.sh
+# Open traderworkstation
+bindsym Mod1+Control+t exec bash ~/Start/trader.sh $workspace7
 # Move to previous and next workspaces
 bindsym $mod+Mod1+Left workspace prev 
 bindsym $mod+Mod1+Right workspace next
@@ -255,9 +256,23 @@ exec_always ~/Start/mouse_keyboard_setup.sh
 exec --no-startup-id nm-applet
 exec /usr/bin/pasystray
 exec spotify
+exec ~/Start/emails.sh $workspace2 
+for_window [workspace=$workspace2] layout tabbed
 
 # Set the wallpaper here
 exec_always feh --bg-scale /home/kevin/Pictures/Hawaii\ 2018/Kyle\'s\ Phone/20181009_134055.jpg
+
+# Launcher shortcuts
+set $mode_launcher Launch: [f]irefox [k]ipet [t]rader 
+mode "$mode_launcher" {
+    bindsym f exec firefox
+    bindsym t exec bash ~/Start/trader.sh $workspace7
+    bindsym k exec bash ~/Start/run_kipet.sh
+
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+bindsym $mod+o mode "$mode_launcher"
 
 # Suspend etc.
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
